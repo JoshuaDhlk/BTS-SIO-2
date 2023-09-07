@@ -4,6 +4,7 @@ public class Utilisateur {
 	private String nom;
 	private int age;
 	private String prenom;
+	private String dateAnniversaire;
 
 	
 	//Constructeur
@@ -11,6 +12,7 @@ public class Utilisateur {
 		this.nom = nom;
 		this.age = age;
 		this.prenom = prenom;
+		this.dateAnniversaire = dateAnniversaire;
 	}
 	
 	public Utilisateur(String nom, String prenom) {
@@ -51,6 +53,12 @@ public class Utilisateur {
 		return this.age;
 	}
 	
+	public String getDateAnniversaire() {
+		return this.dateAnniversaire;
+	}
+	public void setDateAnniversaire(String dateAnniversaire) {
+		this.dateAnniversaire=dateAnniversaire;
+		
 	// Ne respect pas les norme du Set
 	
 	public boolean setAge(int age) {
