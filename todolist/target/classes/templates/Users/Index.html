@@ -1,0 +1,18 @@
+{{>/include/header }}
+<h2>Utilisateur</h2>
+<table>
+	{{#users}}
+	<tr>
+		<td>{{login}} 
+		<td>{{email}} <button>Edit user</button>
+	<tr>
+	{{/users}}
+</table>
+
+<button>Add user</button>
+<button>Delete user</button>
+<a href="/users/addUsers">Ajouter un utilisateur</a>
+<form action="todolist/src/main/resources/templates/addUsers/addUsers.html">
+    <button>Home</button>
+</form>
+{{> /include/footer }}
