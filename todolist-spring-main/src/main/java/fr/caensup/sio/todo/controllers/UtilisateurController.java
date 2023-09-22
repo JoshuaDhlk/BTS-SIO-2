@@ -2,6 +2,7 @@ package fr.caensup.sio.todo.controllers;
 
 import java.util.Optional;
 
+import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import fr.caensup.sio.todo.models.ToDoList;
 import fr.caensup.sio.todo.models.Utilisateur;
 import fr.caensup.sio.todo.repositories.UtilisateurRepository;
 
@@ -30,6 +32,13 @@ public class UtilisateurController {
 		return "/users/index";
 	}
 
+	@PostMapping("/users/filter")
+	public ModelAndView filterAction(RequestParam String filter) {
+		filter="%"+filter+"%";
+		return new ModelAndView("/users/index", "users", uRepository.filter(filter, filter));
+	}
+	
+	
 	@GetMapping("/users/{id}")
 	public ModelAndView showUserAction(@PathVariable int id) {
 		Optional<Utilisateur> optUser = uRepository.findById(id);
@@ -45,7 +54,15 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/users/create")
-	public RedirectView submitCreateUserAction(@ModelAttribute Utilisateur user, RedirectAttributes attrs) {
+	public RedirectView submitCreateUserAction(@ModelAttribute Utilisateur user, RedirectAttributes attrs, @RequestParam String myLists) {
+		if(myLists!="") {
+			for(String listName :myLists.split(",")) {
+				ToDoList list=new ToDoList();
+				list.setNom(listName);
+				list.setUtilisateur(user);
+				user.getListes().add(list);
+			}
+		}
 		uRepository.save(user);
 		attrs.addFlashAttribute("message", "Utilisateur " + user.getLogin() + " ajouté");
 		return new RedirectView("/users");
